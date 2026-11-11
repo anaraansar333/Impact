@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "Answer": {
+      "description": "Одна искомая величина. Значение — в основных единицах СИ без приставок.",
+      "properties": {
+        "name": {
+          "examples": [
+            "M_max"
+          ],
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "examples": [
+            "максимальный изгибающий момент"
+          ],
+          "title": "Description",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "unit": {
+          "examples": [
+            "N*m"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "tol": {
+          "default": 0.01,
+          "description": "Допуск: 0.01 = 1 %. Если эталон равен 0 — абсолютный допуск",
+          "exclusiveMinimum": 0,
+          "title": "Tol",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "value",
+        "unit"
+      ],
+      "title": "Answer",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "examples": [
+        "MECH-BEAM-0001"
+      ],
+      "pattern": "^(MECH|ELEC|THERM)-[A-Z]{2,6}-\\d{4}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "domain": {
+      "enum": [
+        "mechanics",
+        "electrical",
+        "thermofluids"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "subtopic": {
+      "title": "Subtopic",
+      "type": "string"
+    },
+    "difficulty": {
+      "description": "1 — одна формула, 2 — несколько шагов, 3 — составная модель",
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Difficulty",
+      "type": "integer"
+    },
+    "statement": {
+      "description": "Полное условие, все данные в тексте",
+      "minLength": 20,
+      "title": "Statement",
+      "type": "string"
+    },
+    "answers": {
+      "items": {
+        "$ref": "#/$defs/Answer"
+      },
+      "minItems": 1,
+      "title": "Answers",
+      "type": "array"
+    },
+    "solution": {
+      "description": "Эталонное решение",
+      "title": "Solution",
+      "type": "string"
+    },
+    "checks": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Необязательно. Имя ответа -> формула с числами, напр. \"10000*4**2/8\" (доступны sqrt, log, sin...)",
+      "title": "Checks",
+      "type": "object"
+    },
+    "source": {
+      "default": "",
+      "description": "Откуда задача, напр. \"Тарг, №12.3, числа изменены\"",
+      "title": "Source",
+      "type": "string"
+    },
+    "author": {
+      "title": "Author",
+      "type": "string"
+    },
+    "verified": {
+      "default": false,
+      "title": "Verified",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "domain",
+    "subtopic",
+    "difficulty",
+    "statement",
+    "answers",
+    "solution",
+    "author"
+  ],
+  "title": "Task",
+  "type": "object"
+}
